@@ -10,6 +10,10 @@ import {AppRoutingModule} from './app-routing.module';
 import {UsersService} from './shared/services/users.service';
 import {HttpClientModule} from '@angular/common/http';
 import {AuthService} from './shared/services/auth.service';
+import {AngularFireAuth} from 'angularfire2/auth';
+import {SystemModule} from './system/system.module';
+import {CommonFunctionService} from './shared/Methods/common-function.service';
+import {AuthGuard} from './shared/services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -22,11 +26,15 @@ import {AuthService} from './shared/services/auth.service';
     AngularFireDatabaseModule,
     AuthModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SystemModule
   ],
   providers: [
-      UsersService,
-      AuthService
+    UsersService,
+    AuthService,
+    AngularFireAuth,
+    CommonFunctionService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

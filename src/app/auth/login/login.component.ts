@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UsersService} from '../../shared/services/users.service';
 import {Message} from '../../shared/models/message.model';
 import {AuthService} from '../../shared/services/auth.service';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {IUser} from '../../shared/models/user.model';
+import {Router} from '@angular/router';
+import {CommonFunctionService} from '../../shared/Methods/common-function.service';
 
 @Component({
   selector: 'aks-login',
@@ -17,20 +16,22 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   message: Message;
   changeBtn: boolean;
+  isAuthGoogle$ = this.authService.isAuthGoogle$;
 
-  constructor( private userService: UsersService,
-               private authService: AuthService,
+  constructor( private authService: AuthService,
                private router: Router,
-               private route: ActivatedRoute
-  ) { }
+               private commonFunctions: CommonFunctionService
+  ) {}
 
   ngOnInit() {
 
-    this.message = new Message('', 'danger');
+    this.message = this.commonFunctions.showMessage('', 'danger');
 
-    this.route.queryParams.subscribe( (params: Params) => {
-      if (params['nowCanLogIn']) {
-        this.showMessage('Теперь вы можете зайти в систему', 'success');
+    this.isAuthGoogle$.subscribe( (val) => {
+      if ( val !== null && val !== undefined ) {
+        this.router.navigate(['/system', 'bill']);
+      } else {
+        console.log('Пожалуйста зарегистрируйтесь ! ');
       }
     });
 
@@ -40,36 +41,28 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private showMessage(text: string, type: string = 'danger' ) {
-    this.message = new Message(text, type);
-    window.setTimeout(() => {
-      this.message.text = '';
-    }, 2000);
-  }
-
   onsubmit() {
     const formData = this.form.value;
-    this.userService.getUserByEmail(formData.email).subscribe( (user: IUser) => {
-      console.log(user);
-      if (user) {
-          if (user.password === formData.password) {
-            this.message.text = '';
-            window.localStorage.setItem('user', JSON.stringify(user));
-            this.authService.login();
-            /*this.router.navigate(['']);*/
-            this.showMessage('Вы можете войти в систему !', 'success');
-          } else {
-            this.showMessage('Пароль не верный ! Вход запрещен !');
-          }
-      } else {
-        this.showMessage('Такого пользователя не существует !');
+    this.authService.loginWithEmailAndPassword(formData.email, formData.password).catch((error) => {
+      console.log(error);
+      if (error.code === 'auth/user-not-found') {
+        this.message = this.commonFunctions.showMessage('Такого юзера не существует !');
+      } else if (error.code === 'auth/wrong-password') {
+        this.message = this.commonFunctions.showMessage('Пароль введен не верно !');
+      } else if (error.code === 'auth/invalid-email') {
+        this.message = this.commonFunctions.showMessage('Введен некорректный Email !');
+      } else if (error.code === 'auth/user-disabled') {
+        this.message = this.commonFunctions.showMessage('Пользователь с таким Email был отключен ! Простите !');
       }
     });
   }
 
-  onMouseMove(event) {
-    const moveToSide = event.offsetX;
-    const width = event.target.clientWidth;
-    width / 2 < moveToSide ? this.changeBtn = true : this.changeBtn = false;
+  loginGoogle() {
+    this.authService.loginWithGoggle();
   }
+
+  logout() {
+    this.authService.logOut();
+  }
+
 }

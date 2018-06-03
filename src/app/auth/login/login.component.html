@@ -52,7 +52,6 @@
         <button type="submit" class="btn btn-block btn-primary"
                 [ngClass]="{'btn-info': changeBtn, 'btn-primary': !changeBtn}"
                 [disabled]="form.invalid"
-                (mousemove)="onMouseMove($event)"
         >
             Войти
         </button>
@@ -62,4 +61,23 @@
             Нет аккаунта? <a [routerLink]="'/registration'" >Зарегистрироваться!</a>
         </p>
     </div>
+
+
+
 </form>
+
+<div class="form-group">
+    <div *ngIf="isAuthGoogle$ | async; else showLogin">
+        <button class="btn btn-block btn-primary-outline"
+                (click)="logout()">
+            Logout
+        </button>
+    </div>
+    <ng-template #showLogin>
+        <p class="text-center">Сторонняя авторизация</p>
+        <button class="btn btn-block btn-primary-outline"
+                (click)="loginGoogle()">
+            Login with Google / Войти через Гугл !
+        </button>
+    </ng-template>
+</div>
