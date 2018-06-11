@@ -30,8 +30,6 @@ export class LoginComponent implements OnInit {
     this.isAuthGoogle$.subscribe( (val) => {
       if ( val !== null && val !== undefined ) {
         this.router.navigate(['/system', 'bill']);
-      } else {
-        console.log('Пожалуйста зарегистрируйтесь ! ');
       }
     });
 

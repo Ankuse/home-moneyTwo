@@ -1,0 +1,18 @@
+<div class="col-md-12 marg">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input
+                        type="number"
+                        class="form-control"
+                        placeholder="&nbsp;&nbsp;Сумма"
+                        id="calc"
+                        value="{{calculated}}"
+                        [(ngModel)]="calculated"
+                        (input)="getOutValue($event)"
+                >
+            </div>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+</div>

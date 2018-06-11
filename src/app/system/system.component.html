@@ -1,32 +1,10 @@
 <div class="main-wrapper">
     <div class="app">
         <!--HEADER-->
-        <header class="header">
-            <div class="header-block header-block-search">
-                12:12:12
-            </div>
-            <div class="header-block header-block-nav">
-                <ul class="nav-profile">
-                    <li class="profile dropdown" aksDropdown>
-                        <a class="nav-link dropdown-toggle"
-                           role="button"
-                        >
-                                <span class="name">
-                                    Здравствуйте, {{ user }}
-                                </span>
-                        </a>
-                        <div class="dropdown-menu profile-dropdown-menu">
-                            <a class="dropdown-item" href="#"> <i class="fa fa-gear icon"></i>Сделать запись</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" (click)="logout()">
-                                <i class="fa fa-power-off icon"></i>
-                                Выйти
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </header>
+        <aks-header
+                [user]="user"
+        >
+        </aks-header>
         <!--HEADER-->
         <aks-sidebar></aks-sidebar>
         <!--CONTENT-->

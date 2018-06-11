@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 import {AuthService} from '../shared/services/auth.service';
 import {Router} from '@angular/router';
 import {UsersService} from '../shared/services/users.service';
@@ -8,6 +8,7 @@ import {UsersService} from '../shared/services/users.service';
   templateUrl: './system.component.html',
   styleUrls: ['./system.component.styl']
 })
+
 export class SystemComponent implements OnInit {
 
   user: string;
@@ -33,14 +34,9 @@ export class SystemComponent implements OnInit {
         }
       } else {
         this.router.navigate(['/login']);
-        console.log('Пожалуйста зарегистрируйтесь ! ');
       }
     });
 
-  }
-
-  logout() {
-    this.authService.logOut();
   }
 
 }
