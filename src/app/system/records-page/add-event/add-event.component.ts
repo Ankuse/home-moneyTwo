@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddEventComponent implements OnInit {
 
-  categories: Array;
+  categories: Array<object>;
 
   constructor() { }
 
