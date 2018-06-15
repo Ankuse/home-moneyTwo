@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {CategoriesService} from '../../shared/services/categories.service';
+import {AuthService} from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'aks-add-event',
@@ -7,15 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddEventComponent implements OnInit {
 
-  categories: Array<object>;
+  categories: any[];
 
-  constructor() { }
+  constructor( private categoriesService: CategoriesService,
+               private afAuth: AuthService,
+  ) { }
 
   ngOnInit() {
-    this.categories = [
-      { name: 'Первая категория' },
-      { name: 'Вторая категория' }
-    ];
+    this.afAuth.isAuthGoogle$.subscribe( (val) => {
+      if ( val !== null && val !== undefined ) {
+        const uid = val.uid;
+        this.categoriesService.getCategories(uid).subscribe((elem) => {
+          this.categories = elem;
+        });
+      }
+    });
   }
 
 }

@@ -27,47 +27,46 @@ export class AuthService {
     return this.authState !== null ? this.authState.uid : '';
   }
 
-  setUserData(email, password, name) {
+  setUserData(email, name, password? ) {
     const path = `users/${this.currentUserId}`;
     const data = {
       email: email,
+      name: name,
       password: password,
-      name: name
     };
     this.db.object(path).update(data);
   }
 
   /* Метод не закончен, не удалось придумать как удалять существующие аналогичные имейлы*/
-  getExistEmail(email) {
-    /*const geter = this.httpClient.get('https://homemoney-290c1.firebaseio.com/users/1sPkPMJnf7eJMBBIK9ZDwSYVAoX2', {
-      headers: new HttpHeaders().append('Access-Control-Allow-Origin', '*'),
-      responseType: 'json',
-    });
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'my-auth-token'
-      })
-    };
-    const urlPtipo = 'https://homemoney-290c1.firebaseio.com/users/1sPkPMJnf7eJMBBIK9ZDwSYVAoX2';
-    const geterD = this.httpClient.get(urlPtipo, httpOptions);
-    geterD.subscribe(val => { console.log(val); });*/
-
-    const convEmail = email.toLowerCase();
-    const exist_email = this.db.list('/users', ref => ref.orderByChild('email').equalTo(convEmail)).valueChanges();
+  getExistEmail(uid: string, email: string, convEmail: string, name: string, password: string): Observable<any> {
+    const path = `users`;
+    this.db.list(path).update(uid, {email: convEmail, name: name, password: password});
+    return this.db.list(path, ref => ref.orderByChild('email').equalTo(email)).valueChanges();
   }
 
   createUserByEmailAndPassword(email, password, name) {
     const convEmail = email.toLowerCase();
     return this.afAuth.auth.createUserWithEmailAndPassword(convEmail, password).then((user) => {
       this.authState = user;
-      this.setUserData(convEmail, password, name);
+      this.setUserData(convEmail, name, password );
       this.logOut();
+      this.getExistEmail(user.uid, user.email, convEmail, name, password).subscribe( (val) => {
+        debugger;
+        console.log(val);
+      });
     });
   }
 
   loginWithGoggle() {
-    this.afAuth.auth.signInWithPopup( new firebase.auth.GoogleAuthProvider());
+    this.afAuth.auth.signInWithPopup( new firebase.auth.GoogleAuthProvider()).then( (user) => {
+      this.authState = user.user;
+      const data = {
+        email: this.authState.email,
+        name: this.authState.displayName,
+        password: '',
+      };
+      this.setUserData(data.email, data.name, data.password );
+    });
   }
 
   logOut() {

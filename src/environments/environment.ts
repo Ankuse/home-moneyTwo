@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 // TODO: поставить в package.json в scripts.build: 'ng build --prod'
 export const environment = {
-  production: false,
+  production: true,
 
   // Initialize Firebase
   firebase: {
