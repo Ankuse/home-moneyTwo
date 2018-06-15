@@ -13,6 +13,7 @@ import {IUser} from '../../shared/models/user.model';
   styleUrls: ['./registration.component.styl']
 })
 export class RegistrationComponent implements OnInit {
+
   message: Message;
   form: FormGroup;
 
@@ -33,12 +34,8 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  // TODO: обработать метод с задержкой и переходом
-  onsubmit() {
+  public onsubmit() {
     const formData = this.form.value;
-
-    /* Метод удаления существуеющего имейла в /users  --- Незакончен ---*/
-    // this.authService.getExistEmail(formData.email);
 
     /*On successful creation of the user account, this user will also be signed in to your application.*/
     this.authService.createUserByEmailAndPassword(formData.email, formData.password, formData.name)
@@ -56,7 +53,7 @@ export class RegistrationComponent implements OnInit {
       });
   }
 
-  existingEmail(control: FormControl): Promise<any> | Observable<any> {
+  private existingEmail(control: FormControl): Promise<any> | Observable<any> {
     return new Promise( (resolve, reject) => {
       this.userService.getUserByEmail(control.value).subscribe( (user: IUser[]) => {
         if (user.length > 0) {

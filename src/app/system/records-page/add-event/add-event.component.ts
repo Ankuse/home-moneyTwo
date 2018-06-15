@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CategoriesService} from '../../shared/services/categories.service';
 import {AuthService} from '../../../shared/services/auth.service';
 
@@ -7,6 +7,7 @@ import {AuthService} from '../../../shared/services/auth.service';
   templateUrl: './add-event.component.html',
   styleUrls: ['./add-event.component.styl']
 })
+
 export class AddEventComponent implements OnInit {
 
   categories: any[];
@@ -15,7 +16,7 @@ export class AddEventComponent implements OnInit {
                private afAuth: AuthService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.afAuth.isAuthGoogle$.subscribe( (val) => {
       if ( val !== null && val !== undefined ) {
         const uid = val.uid;

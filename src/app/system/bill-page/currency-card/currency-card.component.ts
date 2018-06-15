@@ -5,6 +5,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
   templateUrl: './currency-card.component.html',
   styleUrls: ['./currency-card.component.styl']
 })
+
 export class CurrencyCardComponent implements OnInit, OnChanges {
 
   @Input() currencyRub: any;
@@ -19,7 +20,7 @@ export class CurrencyCardComponent implements OnInit, OnChanges {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.date = this.currencyDollar.Date;
   }
 

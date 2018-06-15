@@ -3,7 +3,9 @@ import {Message} from '../models/message.model';
 
 @Injectable()
 export class CommonFunctionService {
+
   message: Message;
+
   constructor() { }
 
   public showMessage(text: string, type: string = 'danger' ) {

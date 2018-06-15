@@ -10,11 +10,11 @@ export class BillService {
                private db: AngularFireDatabase,
   ) { }
 
-  getBill(): Observable<Bill[]> {
+  public getBill(): Observable<Bill[]> {
     return this.db.list('/bill').valueChanges();
   }
 
-  getCurrency(currency: number = 145): Observable<any> {
+  public getCurrency(currency: number = 145): Observable<any> {
     return this.http.get(`https://www.nbrb.by/API/ExRates/Rates/${currency}`);
   }
 }

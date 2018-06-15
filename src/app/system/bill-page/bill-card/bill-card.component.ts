@@ -21,7 +21,7 @@ export class BillCardComponent implements OnInit, OnChanges {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.rub = this.currencyRub.Cur_OfficialRate * this.calc;
     this.dollar = this.currencyDollar.Cur_OfficialRate * this.calc;
     this.euro = this.currencyEuro.Cur_OfficialRate * this.calc;

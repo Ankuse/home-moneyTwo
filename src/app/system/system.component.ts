@@ -1,4 +1,4 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../shared/services/auth.service';
 import {Router} from '@angular/router';
 import {UsersService} from '../shared/services/users.service';
@@ -19,7 +19,7 @@ export class SystemComponent implements OnInit {
                private userService: UsersService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     this.isAuthGoogle$.subscribe( (val) => {
       if ( val !== null && val !== undefined ) {

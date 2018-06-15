@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CategoriesService} from '../../shared/services/categories.service';
 import {AuthService} from '../../../shared/services/auth.service';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
@@ -14,8 +14,8 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 
   form_edit_category: FormGroup;
   items: Observable<any>;
-  currentCategory;
-  uid;
+  currentCategory: any;
+  uid: string;
 
   sub1: Subscription;
   sub2: Subscription;
@@ -33,7 +33,7 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form_edit_category = new FormGroup({
       select:  new FormControl(null, [Validators.required]),
       name: new FormControl(null, [Validators.required]),
@@ -41,7 +41,7 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  onsubmit( form: NgForm) {
+  public onsubmit( form: NgForm): void {
     this.sub2 = this.afAuth.isAuthGoogle$.subscribe( (val) => {
       if ( val !== null && val !== undefined ) {
         const { name, limit } = form.value;
@@ -52,10 +52,9 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  onCategoryChange(form?: NgForm) {
-    const uid = this.uid;
+  public onCategoryChange(form: NgForm): void {
     const select = form.value.select.name;
-    this.categoriesService.getCurrentCategory(select, uid).subscribe((curCategory) => {
+    this.categoriesService.getCurrentCategory(select, this.uid).subscribe((curCategory) => {
       curCategory.map( (category) => {
         this.currentCategory = category;
         this.form_edit_category.controls['name'].setValue(this.currentCategory.name);

@@ -18,14 +18,14 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
                private afAuth: AuthService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form_add_category = new FormGroup({
       name: new FormControl(null, [Validators.required]),
       limit: new FormControl(null, [Validators.required, Validators.min(1)])
     });
   }
 
-  onsubmit(form: NgForm) {
+  public onsubmit(form: NgForm): void {
     const { name, limit } = form.value;
     this.sub1 = this.afAuth.isAuthGoogle$.subscribe( (val) => {
       if ( val !== null && val !== undefined ) {

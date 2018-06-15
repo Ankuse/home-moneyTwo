@@ -37,9 +37,10 @@ export class LoginComponent implements OnInit {
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
     });
+
   }
 
-  onsubmit() {
+  public onsubmit() {
     const formData = this.form.value;
     this.authService.loginWithEmailAndPassword(formData.email, formData.password).catch((error) => {
       console.log(error);
@@ -55,11 +56,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  loginGoogle() {
+  public loginGoogle() {
     this.authService.loginWithGoggle();
   }
 
-  logout() {
+  public logout() {
     this.authService.logOut();
   }
 

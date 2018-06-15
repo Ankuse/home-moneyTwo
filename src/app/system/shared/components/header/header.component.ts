@@ -15,13 +15,13 @@ export class HeaderComponent implements OnInit {
       private authService: AuthService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     setInterval(() => {
       this.date = new Date();
     }, 1000);
   }
 
-  logout() {
+  public logout(): void {
     this.authService.logOut();
   }
 

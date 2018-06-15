@@ -7,14 +7,14 @@ import {IUser} from '../models/user.model';
 
 export class UsersService {
 
-  items: Observable<IUser[]>;
+  items$: Observable<IUser[]>;
 
   constructor( private db: AngularFireDatabase,
   ) {}
 
-  getUserByEmail(email: string): Observable<IUser[]> {
+  public getUserByEmail(email: string): Observable<IUser[]> {
     const convEmail = email.toLowerCase();
-    return this.items = this.db.list('/users', ref => ref.orderByChild('email').equalTo(convEmail)).valueChanges();
+    return this.items$ = this.db.list('/users', ref => ref.orderByChild('email').equalTo(convEmail)).valueChanges();
   }
 
 }

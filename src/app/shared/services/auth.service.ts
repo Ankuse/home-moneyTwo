@@ -17,7 +17,8 @@ export class AuthService {
     this.isAuthGoogle$ = afAuth.authState;
   }
 
-  loginWithEmailAndPassword(email, password) {
+  public loginWithEmailAndPassword(email: string,
+                                   password: string): Promise<any>  {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password).then((user) => {
       this.authState = user;
     });
@@ -27,7 +28,9 @@ export class AuthService {
     return this.authState !== null ? this.authState.uid : '';
   }
 
-  setUserData(email, name, password? ) {
+  private setUserData(email: string,
+                      name: string,
+                      password?: string ): void {
     const path = `users/${this.currentUserId}`;
     const data = {
       email: email,
@@ -37,27 +40,18 @@ export class AuthService {
     this.db.object(path).update(data);
   }
 
-  /* Метод не закончен, не удалось придумать как удалять существующие аналогичные имейлы*/
-  getExistEmail(uid: string, email: string, convEmail: string, name: string, password: string): Observable<any> {
-    const path = `users`;
-    this.db.list(path).update(uid, {email: convEmail, name: name, password: password});
-    return this.db.list(path, ref => ref.orderByChild('email').equalTo(email)).valueChanges();
-  }
-
-  createUserByEmailAndPassword(email, password, name) {
+  public createUserByEmailAndPassword(email: string,
+                                      password: string,
+                                      name: string): Promise<any> {
     const convEmail = email.toLowerCase();
     return this.afAuth.auth.createUserWithEmailAndPassword(convEmail, password).then((user) => {
       this.authState = user;
       this.setUserData(convEmail, name, password );
       this.logOut();
-      this.getExistEmail(user.uid, user.email, convEmail, name, password).subscribe( (val) => {
-        debugger;
-        console.log(val);
-      });
     });
   }
 
-  loginWithGoggle() {
+  public loginWithGoggle(): void {
     this.afAuth.auth.signInWithPopup( new firebase.auth.GoogleAuthProvider()).then( (user) => {
       this.authState = user.user;
       const data = {
@@ -69,7 +63,7 @@ export class AuthService {
     });
   }
 
-  logOut() {
+  public logOut(): void {
     this.afAuth.auth.signOut();
   }
 

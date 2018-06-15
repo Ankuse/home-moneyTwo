@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
 import {BillService} from '../shared/services/bill.service';
@@ -21,7 +21,7 @@ export class BillPageComponent implements OnInit, OnDestroy {
   constructor( private billService: BillService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sub1 = Observable.combineLatest(
         this.billService.getCurrency(), // dollar
         this.billService.getCurrency(292), // euro
@@ -34,7 +34,7 @@ export class BillPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  onRefresh() {
+  public onRefresh(): void {
     this.isLoaded = false;
     this.sub2 = Observable.combineLatest(
         this.billService.getCurrency(),
@@ -48,11 +48,11 @@ export class BillPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  eventCalcEvent(event: Event) {
+  public eventCalcEvent(event: Event): void {
     this.calc = Number(event);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.sub1) {
       this.sub1.unsubscribe();
     } else if (this.sub2) {
