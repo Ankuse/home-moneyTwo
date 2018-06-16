@@ -14,10 +14,10 @@
                         formControlName="select"
                         (change)="onCategoryChange(f)"
                 >
-                    <option *ngFor="let item of items"
-                            [ngValue]="item"
+                    <option *ngFor="let category of categories$"
+                            [ngValue]="category"
                     >
-                        {{item.name}}
+                        {{category.name}}
                     </option>
                 </select>
             </div>

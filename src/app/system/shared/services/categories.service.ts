@@ -34,18 +34,18 @@ export class CategoriesService {
     return this.db.list(path).valueChanges();
   }
 
-  public updateCategories( uid: string,
-                    select: string,
-                    key: string,
-                    newName: string,
-                    newLimit: number ): Observable<any> {
+  public updateCategories(  uid: string,
+                            select: string,
+                            key: string,
+                            newName: string,
+                            newLimit: number
+  ): Observable<any> {
     const path = `users/${uid}/bill`;
     this.db.list(path).update(key, {name: newName, limit: newLimit});
     return this.db.list(path, ref => ref.orderByChild('name').equalTo(select) ).valueChanges();
   }
 
-  public getCurrentCategory(select: string,
-                            uid: string): Observable<any> {
+  public getCurrentCategory(select: string, uid: string): Observable<any> {
     const path = `users/${uid}/bill`;
     return this.db.list(path, ref => ref.orderByChild('name').equalTo(select) ).valueChanges();
   }
