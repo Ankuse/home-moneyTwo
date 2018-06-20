@@ -1,0 +1,26 @@
+<div class="alert
+            alert-{{message.type}}
+            text-center"
+     *ngIf="message.text"
+>
+    {{ message.text }}
+</div>
+<p >
+    Введите счет в поле ниже и нажмите "Enter". Теперь на странице "Запись" вы можете создать категории !
+</p>
+<div class="row">
+    <div class="form-group">
+        <div class="col-xs-6">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <input
+                        type="number"
+                        class="form-control"
+                        placeholder="&nbsp;&nbsp;Счет"
+                        value=""
+                        [(ngModel)]="bill"
+                        formControlName="bill"
+                >
+            </form>
+        </div>
+    </div>
+</div>
