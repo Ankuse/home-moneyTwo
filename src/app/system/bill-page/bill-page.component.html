@@ -8,6 +8,10 @@
         </button>
     </div>
 </div>
+
+<aks-set-bill></aks-set-bill>
+<hr>
+
 <section class="section">
     <div class="row text-center" *ngIf="!isLoaded">Loading...</div>
     <div class="row" *ngIf="isLoaded">
@@ -15,7 +19,6 @@
                 (calc)="eventCalcEvent($event)"
         >
         </aks-calc-card>
-
         <aks-bill-card [currencyRub]="currencyRub"
                        [currencyDollar]="currencyDollar"
                        [currencyEuro]="currencyEuro"

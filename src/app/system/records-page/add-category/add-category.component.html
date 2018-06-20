@@ -5,7 +5,13 @@
         </div>
     </div>
     <div class="card-block">
-        <form [formGroup]="form_add_category" (ngSubmit)="onsubmit(f)" #f="ngForm">
+        <div class="alert
+            alert-{{message.type}}"
+             *ngIf="message.text"
+        >
+            {{ message.text }}
+        </div>
+        <form [formGroup]="form_add_category" (ngSubmit)="onSubmit(f)" #f="ngForm">
             <div class="form-group"
                  [ngClass]="{'has-error':form_add_category.get('name').invalid && form_add_category.get('name').touched}"
             >

@@ -9,8 +9,6 @@ import {SystemComponent} from './system.component';
 import {SystemRoutingModule} from './system-routing.module';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { DropdownDirective } from './shared/directives/dropdown.directive';
-import {AuthService} from '../shared/services/auth.service';
-import {AngularFireAuth} from 'angularfire2/auth';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { BillCardComponent } from './bill-page/bill-card/bill-card.component';
 import { CurrencyCardComponent } from './bill-page/currency-card/currency-card.component';
@@ -20,12 +18,14 @@ import { AddCategoryComponent } from './records-page/add-category/add-category.c
 import { AddEventComponent } from './records-page/add-event/add-event.component';
 import { EditCategoryComponent } from './records-page/edit-category/edit-category.component';
 import {CategoriesService} from './shared/services/categories.service';
+import {EventCategoriesService} from './shared/services/event-categories.service';
+import { SetBillComponent } from './bill-page/set-bill/set-bill.component';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    SystemRoutingModule
+    SystemRoutingModule,
   ],
   declarations: [
     SystemComponent,
@@ -41,11 +41,13 @@ import {CategoriesService} from './shared/services/categories.service';
     CalcCardComponent,
     AddCategoryComponent,
     AddEventComponent,
-    EditCategoryComponent
+    EditCategoryComponent,
+    SetBillComponent
   ],
   providers: [
     BillService,
-    CategoriesService
+    CategoriesService,
+    EventCategoriesService
   ]
 })
 export class SystemModule { }

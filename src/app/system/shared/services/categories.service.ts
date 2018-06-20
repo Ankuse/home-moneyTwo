@@ -12,7 +12,7 @@ export class CategoriesService {
   ) { }
 
   public getCategiriesList(uid): Observable<any> {
-    return this.items$ = this.db.list(`users/${uid}/bill`).snapshotChanges().pipe(
+    return this.items$ = this.db.list(`users/${uid}/categories`).snapshotChanges().pipe(
         map( (changes) => (
             changes.map( (c) =>
                 (
@@ -25,12 +25,12 @@ export class CategoriesService {
 
   public addCategories(uid: string,
                        category: object): void {
-    const path = `users/${uid}/bill`;
+    const path = `users/${uid}/categories`;
     this.db.list(path).push(category);
   }
 
   public getCategories(uid): Observable<any> {
-    const path = `users/${uid}/bill`;
+    const path = `users/${uid}/categories`;
     return this.db.list(path).valueChanges();
   }
 
@@ -40,13 +40,13 @@ export class CategoriesService {
                             newName: string,
                             newLimit: number
   ): Observable<any> {
-    const path = `users/${uid}/bill`;
+    const path = `users/${uid}/categories`;
     this.db.list(path).update(key, {name: newName, limit: newLimit});
     return this.db.list(path, ref => ref.orderByChild('name').equalTo(select) ).valueChanges();
   }
 
   public getCurrentCategory(select: string, uid: string): Observable<any> {
-    const path = `users/${uid}/bill`;
+    const path = `users/${uid}/categories`;
     return this.db.list(path, ref => ref.orderByChild('name').equalTo(select) ).valueChanges();
   }
 }

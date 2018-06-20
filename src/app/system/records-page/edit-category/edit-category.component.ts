@@ -4,6 +4,8 @@ import {AuthService} from '../../../shared/services/auth.service';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
+import {Message} from '../../../shared/models/message.model';
+import {CommonFunctionService} from '../../../shared/Methods/common-function.service';
 
 @Component({
   selector: 'aks-edit-category',
@@ -13,6 +15,7 @@ import {Subscription} from 'rxjs/Subscription';
 export class EditCategoryComponent implements OnInit, OnDestroy {
 
   form_edit_category: FormGroup;
+  message: Message;
   categories$: Observable<any>;
   currentCategory: any;
   uid: string;
@@ -24,9 +27,12 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 
   constructor( private afAuth: AuthService,
                private categoriesService: CategoriesService,
+               private commonFunctions: CommonFunctionService
   ) { }
 
   ngOnInit(): void {
+
+    this.message = this.commonFunctions.showMessage('', 'success');
 
     this.form_edit_category = new FormGroup({
       select:  new FormControl(null, [Validators.required]),
@@ -39,9 +45,16 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
         this.uid = val.uid;
         this.sub4 = this.categoriesService.getCategiriesList(val.uid).subscribe((categories) => {
           this.categories$ = categories;
-          this.form_edit_category.controls['select'].setValue(this.categories$[0]);
-          this.form_edit_category.controls['name'].setValue(this.categories$[0].name);
-          this.form_edit_category.controls['limit'].setValue(this.categories$[0].limit);
+          if (categories.length > 1) {
+            this.form_edit_category.controls['select'].setValue(categories[0]);
+            this.form_edit_category.controls['name'].setValue(categories[0].name);
+            this.form_edit_category.controls['limit'].setValue(categories[0].limit);
+          } else {
+            console.log('Категорий нет ! Добавьте категории ! ');
+          }
+        },
+        (error) => {
+          console.log(error);
         });
       }
     });
@@ -55,6 +68,7 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
         const select = form.value.select.name;
         const key = form.value.select.key;
         this.categoriesService.updateCategories(val.uid, select, key, name, limit);
+        this.message = this.commonFunctions.showMessage(`Категория "${select}" успешно изменена`, 'success');
       }
     });
   }
@@ -67,7 +81,11 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
         this.form_edit_category.controls['name'].setValue(this.currentCategory.name);
         this.form_edit_category.controls['limit'].setValue(this.currentCategory.limit);
       });
-    } );
+    },
+    (error) => {
+      console.log(error);
+    }
+    );
   }
 
   ngOnDestroy(): void {

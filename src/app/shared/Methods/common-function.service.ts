@@ -8,11 +8,11 @@ export class CommonFunctionService {
 
   constructor() { }
 
-  public showMessage(text: string, type: string = 'danger' ) {
+  public showMessage(text: string, type: string = 'danger', time: number = 5000) {
     this.message = new Message(text, type);
     window.setTimeout(() => {
       this.message.text = '';
-    }, 5000);
+    }, time);
     return this.message;
   }
 }
