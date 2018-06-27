@@ -18,6 +18,7 @@
                         id="category"
                         required
                         formControlName="select"
+                        [(ngModel)]="keyCategory"
                         (change)="onCategoryChange(f)"
                 >
                     <option *ngFor="let category of categories$"
@@ -59,7 +60,12 @@
                     <span *ngIf="form_edit_category.hasError('min', ['limit'])">Введите число больше 1 !</span>
                 </span>
             </div>
-            <button type="submit" class="btn btn-primary">Добавить</button>
+            <button type="submit"
+                    class="btn btn-primary"
+                    [disabled]="form_edit_category.invalid"
+            >
+                Добавить
+            </button>
         </form>
     </div>
 </div>

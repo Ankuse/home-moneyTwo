@@ -20,6 +20,7 @@ import { EditCategoryComponent } from './records-page/edit-category/edit-categor
 import {CategoriesService} from './shared/services/categories.service';
 import {EventCategoriesService} from './shared/services/event-categories.service';
 import { SetBillComponent } from './bill-page/set-bill/set-bill.component';
+import { DeleteCategoryComponent } from './records-page/delete-category/delete-category.component';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { SetBillComponent } from './bill-page/set-bill/set-bill.component';
     AddCategoryComponent,
     AddEventComponent,
     EditCategoryComponent,
-    SetBillComponent
+    SetBillComponent,
+    DeleteCategoryComponent
   ],
   providers: [
     BillService,

@@ -1,4 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnChanges,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import {CategoriesService} from '../../shared/services/categories.service';
 import {AuthService} from '../../../shared/services/auth.service';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
@@ -12,18 +20,19 @@ import {CommonFunctionService} from '../../../shared/Methods/common-function.ser
   templateUrl: './edit-category.component.html',
   styleUrls: ['./edit-category.component.styl']
 })
-export class EditCategoryComponent implements OnInit, OnDestroy {
+export class EditCategoryComponent implements OnInit, OnDestroy, OnChanges {
+
+  @Output() categories: EventEmitter<any> = new EventEmitter();
+  @Input('clientUid') clientUid: string;
 
   form_edit_category: FormGroup;
   message: Message;
   categories$: Observable<any>;
   currentCategory: any;
-  uid: string;
+  keyCategory = 0;
 
   sub1: Subscription;
   sub2: Subscription;
-  sub3: Subscription;
-  sub4: Subscription;
 
   constructor( private afAuth: AuthService,
                private categoriesService: CategoriesService,
@@ -31,7 +40,6 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-
     this.message = this.commonFunctions.showMessage('', 'success');
 
     this.form_edit_category = new FormGroup({
@@ -39,43 +47,39 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
       name: new FormControl(null, [Validators.required]),
       limit: new FormControl(null, [Validators.required, Validators.min(1)])
     });
+  }
 
-    this.sub1 = this.afAuth.isAuthGoogle$.subscribe( (val) => {
-      if ( val !== null && val !== undefined ) {
-        this.uid = val.uid;
-        this.sub4 = this.categoriesService.getCategiriesList(val.uid).subscribe((categories) => {
-          this.categories$ = categories;
-          if (categories.length > 1) {
-            this.form_edit_category.controls['select'].setValue(categories[0]);
-            this.form_edit_category.controls['name'].setValue(categories[0].name);
-            this.form_edit_category.controls['limit'].setValue(categories[0].limit);
-          } else {
-            console.log('Категорий нет ! Добавьте категории ! ');
-          }
-        },
-        (error) => {
-          console.log(error);
-        });
+  ngOnChanges(): void {
+    this.sub1 = this.categoriesService.getCategiriesList(this.clientUid).subscribe((categories) => {
+      this.categories$ = categories;
+      this.categories.emit(this.categories$);
+
+      if (categories.length > 1) {
+        this.form_edit_category.controls['select'].setValue(categories[0]);
+        this.form_edit_category.controls['name'].setValue(categories[0].name);
+        this.form_edit_category.controls['limit'].setValue(categories[0].limit);
+      } else {
+        console.log('Категорий нет ! Добавьте категории ! ');
       }
+    },
+    (error) => {
+      console.log(error);
     });
-
   }
 
   public onsubmit( form: NgForm): void {
-    this.sub2 = this.afAuth.isAuthGoogle$.subscribe( (val) => {
-      if ( val !== null && val !== undefined ) {
-        const { name, limit } = form.value;
-        const select = form.value.select.name;
-        const key = form.value.select.key;
-        this.categoriesService.updateCategories(val.uid, select, key, name, limit);
-        this.message = this.commonFunctions.showMessage(`Категория "${select}" успешно изменена`, 'success');
-      }
-    });
+    const { name } = form.value;
+    const limit = form.value.limit;
+    const select = form.value.select.name;
+    const key = form.value.select.key;
+    this.categoriesService.updateCategories(this.clientUid, select, key, name, limit);
+    this.message = this.commonFunctions.showMessage(`Категория "${select}" успешно изменена`, 'success');
   }
 
   public onCategoryChange(form: NgForm): void {
+    console.log(this.keyCategory);
     const select = form.value.select.name;
-    this.sub3 = this.categoriesService.getCurrentCategory(select, this.uid).subscribe((curCategory) => {
+    this.sub2 = this.categoriesService.getCurrentCategory(select, this.clientUid).subscribe((curCategory) => {
       curCategory.map( (category) => {
         this.currentCategory = category;
         this.form_edit_category.controls['name'].setValue(this.currentCategory.name);
@@ -93,10 +97,6 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
       this.sub1.unsubscribe();
     } else if (this.sub2) {
       this.sub2.unsubscribe();
-    } else if (this.sub3) {
-      this.sub3.unsubscribe();
-    } else if (this.sub4) {
-      this.sub4.unsubscribe();
     }
   }
 

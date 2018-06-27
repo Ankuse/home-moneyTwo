@@ -44,7 +44,10 @@
                     <span *ngIf="form_add_category.hasError('min', ['limit'])">Введите число больше 1 !</span>
                 </span>
             </div>
-            <button type="submit" class="btn btn-primary">Добавить</button>
+            <button type="submit"
+                    class="btn btn-primary"
+                    [disabled]="form_add_category.invalid"
+            >Добавить</button>
         </form>
     </div>
 </div>

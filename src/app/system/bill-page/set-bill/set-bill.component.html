@@ -5,12 +5,12 @@
 >
     {{ message.text }}
 </div>
-<p >
+<p class="text-center text-info">
     Введите счет в поле ниже и нажмите "Enter". Теперь на странице "Запись" вы можете создать категории !
 </p>
 <div class="row">
     <div class="form-group">
-        <div class="col-xs-6">
+        <div class="col-xs-6 col-xs-offset-3">
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <input
                         type="number"
@@ -20,6 +20,10 @@
                         [(ngModel)]="bill"
                         formControlName="bill"
                 >
+                <button class="btn btn-block btn-primary m-t-1"
+                >
+                    Добавить счет
+                </button>
             </form>
         </div>
     </div>

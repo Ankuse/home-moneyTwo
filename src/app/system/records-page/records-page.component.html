@@ -7,15 +7,29 @@
 <section class="section">
     <div class="row">
         <div class="col-md-6">
-            <aks-add-event></aks-add-event>
+            <aks-add-event
+                    [clientUid]="clientUid"
+            ></aks-add-event>
         </div>
         <div class="col-md-6">
-            <aks-add-category></aks-add-category>
+            <aks-add-category
+                    [clientUid]="clientUid"
+            ></aks-add-category>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <aks-edit-category></aks-edit-category>
+            <aks-edit-category
+                    [clientUid]="clientUid"
+                    (categories)="onCategories($event)"
+            ></aks-edit-category>
         </div>
+        <div class="col-md-6">
+            <aks-delete-category
+                    [categories]="categories"
+                    [clientUid]="clientUid"
+            ></aks-delete-category>
+        </div>
+
     </div>
 </section>

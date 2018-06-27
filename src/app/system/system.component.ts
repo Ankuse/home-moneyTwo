@@ -12,7 +12,6 @@ import {UsersService} from '../shared/services/users.service';
 export class SystemComponent implements OnInit {
 
   user: string;
-  isAuthGoogle$ = this.authService.isAuthGoogle$;
 
   constructor( private authService: AuthService,
                private router: Router,
@@ -21,7 +20,7 @@ export class SystemComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.isAuthGoogle$.subscribe( (val) => {
+    this.authService.isAuthGoogle$.subscribe( (val) => {
       if ( val !== null && val !== undefined ) {
         if (val.displayName !== null) {
           this.user = val.displayName;

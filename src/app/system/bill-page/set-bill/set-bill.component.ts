@@ -24,19 +24,22 @@ export class SetBillComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
     this.message = {
       text: `Ваше счет равен "Загрузка"`,
       type: 'success',
     };
+
     this.form = new FormGroup({
       bill: new FormControl()
     });
+
     this.sub1 = this.authSevice.isAuthGoogle$.subscribe((val) => {
       this.uid = val.uid;
       this.sub2 = this.billService.getBill(this.uid).subscribe((bill) => {
         this.bill = bill.value;
         this.message = {
-          text: `Ваше счет равен ${this.bill}`,
+          text: `Ваш счет равен ${this.bill}`,
           type: 'success',
         };
       });

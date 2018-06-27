@@ -29,6 +29,11 @@ export class CategoriesService {
     this.db.list(path).push(category);
   }
 
+  public deleteCategories(uid: string, key: string): void {
+    const path = `users/${uid}/categories`;
+    this.db.list(path).remove(key);
+  }
+
   public getCategories(uid): Observable<any> {
     const path = `users/${uid}/categories`;
     return this.db.list(path).valueChanges();
